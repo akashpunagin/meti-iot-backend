@@ -4,6 +4,7 @@ const cors = require("cors");
 
 //Routers
 const tempRouter = require("./routes/temp/tempRouter");
+const deviceRouter = require("./routes/device/deviceRouter");
 
 const PORT = process.env.PORT || 8080;
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 //Routes
 app.use("/temp", tempRouter);
+app.use("/device", deviceRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);

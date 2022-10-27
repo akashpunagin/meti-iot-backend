@@ -22,7 +22,7 @@ CREATE TABLE device(
     device_id VARCHAR PRIMARY KEY, --"MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id--
     customer_id uuid REFERENCES customer,
 
-    client_topic VARCHAR NOT NULL, --topic name--
+    client_topic VARCHAR NOT NULL UNIQUE, --topic name--
 
     variant VARCHAR NOT NULL,
     hw_ver VARCHAR NOT NULL,
