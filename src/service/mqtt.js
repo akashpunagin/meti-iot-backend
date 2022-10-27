@@ -16,7 +16,45 @@ async function getTopics() {
   }
 }
 
-async function saveDataInDatabase(deviceIdtopicsObj) {}
+async function saveDataInDatabase(deviceIdtopicsObj, payload) {
+  // const sampleOutput = [
+  //   {
+  //     meter_idx: 0,
+  //     ts: 1666848445,
+  //     ts_reg: 1666868245,
+  //     sensors: [
+  //       { idx: 0, val: 53.65 },
+  //       { idx: 1, val: 230.91 },
+  //       { idx: 2, val: 0 },
+  //       { idx: 3, val: 0 },
+  //       { idx: 4, val: 230.91 },
+  //       { idx: 5, val: 0 },
+  //       { idx: 6, val: 230.91 },
+  //     ],
+  //   },
+  // ];
+
+  for (const data of payload) {
+    for (const sensor of data.sensors) {
+      const reqBody = {
+        device_id: deviceIdtopicsObj.deviceId,
+        sensor_idx: sensor.idx,
+        value: sensor.val,
+      };
+
+      const response = await fetch(
+        "http://localhost:8080/sensorValue/addData",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reqBody),
+        }
+      );
+      const res = await response.json();
+      console.log("ADD RES DATA: ", res);
+    }
+  }
+}
 
 function saveDataFromTopics(deviceIdtopicsObjs) {
   const options = {
@@ -48,7 +86,10 @@ function saveDataFromTopics(deviceIdtopicsObjs) {
                 packet.qos
               }`
             );
-            saveDataInDatabase(deviceIdtopicsObj);
+            saveDataInDatabase(
+              deviceIdtopicsObj,
+              JSON.parse(payload.toString())
+            );
             // client.end();
           });
         }

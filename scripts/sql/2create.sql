@@ -63,7 +63,7 @@ CREATE TABLE sensor_value(
     sensor_idx INT,
 
     meter_idx INT NOT NULL DEFAULT 0,
-    value INT NOT NULL
-    reading_time TIMESTAMPTZ NOT NULL,
+    value FLOAT NOT NULL,
+    reading_time TIMESTAMPTZ NOT NULL
 );
 SELECT create_hypertable('sensor_value', 'reading_time');
