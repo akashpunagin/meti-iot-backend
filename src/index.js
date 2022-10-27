@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const mqttService = require("./service/mqtt");
 
 //Routers
 const tempRouter = require("./routes/temp/tempRouter");
@@ -16,6 +17,10 @@ app.use(express.json());
 app.use("/temp", tempRouter);
 app.use("/device", deviceRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Listening to port ${PORT}`);
+  const deviceIdtopicsObjs = await mqttService.getTopics();
+
+  console.log("Device ID, TOPICS: ", deviceIdtopicsObjs);
+  mqttService.saveDataFromTopics(deviceIdtopicsObjs);
 });

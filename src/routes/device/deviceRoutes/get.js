@@ -5,11 +5,16 @@ module.exports = (router) => {
     console.log("Route:", req.originalUrl);
 
     try {
-      const getRes = await pool.query(`SELECT client_topic FROM device`);
-      const topics = getRes.rows.map((temp) => {
-        return temp.client_topic;
+      const getRes = await pool.query(
+        `SELECT device_id, client_topic FROM device`
+      );
+      const data = getRes.rows.map((temp) => {
+        return {
+          deviceId: temp.device_id,
+          topic: temp.client_topic,
+        };
       });
-      return res.status(200).json(topics);
+      return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json("Server error");
     }

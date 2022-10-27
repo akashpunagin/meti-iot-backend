@@ -60,10 +60,10 @@ CREATE TABLE sensor_value(
     id SERIAL,
     
     device_id VARCHAR REFERENCES device(device_id), -- "MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id
-    sensor_id INT REFERENCES sensor_master(sensor_id),
+    sensor_idx INT,
 
     meter_idx INT NOT NULL DEFAULT 0,
-    reading_time TIMESTAMPTZ NOT NULL,
     value INT NOT NULL
+    reading_time TIMESTAMPTZ NOT NULL,
 );
 SELECT create_hypertable('sensor_value', 'reading_time');
