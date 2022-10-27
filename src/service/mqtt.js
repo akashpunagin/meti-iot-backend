@@ -5,7 +5,7 @@ const URL = "mqtt://eapl.rvce.edu.in:1884";
 
 async function getTopics() {
   try {
-    const response = await fetch("http://localhost:8080/device/get-topics", {
+    const response = await fetch("http://localhost:8080/device/getTopics", {
       method: "GET",
       // headers: { "Content-Type": "application/json" },
       // body: "{}",

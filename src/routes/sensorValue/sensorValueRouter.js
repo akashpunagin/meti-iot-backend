@@ -1,5 +1,5 @@
 const router = require("express").Router();
 
-require("./deviceRoutes/getTopics")(router);
+require("./sensorValueRoutes/addData")(router);
 
 module.exports = router;

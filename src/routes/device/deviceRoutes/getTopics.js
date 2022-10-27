@@ -1,7 +1,7 @@
 const pool = require("../../../db/pool");
 
 module.exports = (router) => {
-  router.get("/get-topics", async (req, res) => {
+  router.get("/getTopics", async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     try {
