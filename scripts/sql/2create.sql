@@ -19,7 +19,7 @@ CREATE TABLE customer(
 );
 
 CREATE TABLE device(
-    device_id SERIAL PRIMARY KEY,
+    device_id VARCHAR PRIMARY KEY, --"MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id--
     customer_id uuid REFERENCES customer,
 
     client_topic VARCHAR NOT NULL, --topic name--
@@ -34,29 +34,33 @@ CREATE TABLE device(
     u_comp_name VARCHAR NOT NULL,
     u_tz_diff VARCHAR NOT NULL,
 
-    u_lat INT NOT NULL,
-    u_long INT NOT NULL,
+    u_lat VARCHAR NOT NULL,
+    u_long VARCHAR NOT NULL,
 
-    u_conn_ssid VARCHAR NOT NULL
+    u_conn_ssid VARCHAR NULL
 );
 
+--for each device, which sensor has what name and measurement--
 CREATE TABLE sensor_master(
     sensor_id SERIAL PRIMARY KEY,
-    device_id INT REFERENCES device,
+    
+    device_id VARCHAR REFERENCES device,
 
-    meter_idx INT NOT NULL DEFAULT 0,
     sensor_idx INT NOT NULL,
+    meter_idx INT NOT NULL DEFAULT 0,
     
     sensor_name VARCHAR NOT NULL,
-    sensor_uom VARCHAR NOT NULL,
-    sensor_report_group INT NOT NULL
+    sensor_uom VARCHAR NOT NULL, --measurement unit-- 
+    sensor_report_group INT NOT NULL, --analog or digital,  digital (1), analog (2)--
+
+    UNIQUE(device_id, sensor_id)
 );
 
 CREATE TABLE sensor_value(
     id SERIAL,
     
-    device_id INT REFERENCES device,
-    sensor_id INT REFERENCES sensor_master,
+    device_id VARCHAR REFERENCES device(device_id), -- "MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id
+    sensor_id INT REFERENCES sensor_master(sensor_id),
 
     meter_idx INT NOT NULL DEFAULT 0,
     reading_time TIMESTAMPTZ NOT NULL,
