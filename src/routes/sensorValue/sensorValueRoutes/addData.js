@@ -5,16 +5,20 @@ module.exports = (router) => {
     console.log("Route:", req.originalUrl);
 
     try {
-      // const getRes = await pool.query(
-      //   `SELECT device_id, client_topic FROM device`
-      // );
-      // const data = getRes.rows.map((temp) => {
-      //   return {
-      //     deviceId: temp.device_id,
-      //     topic: temp.client_topic,
-      //   };
-      // });
-      return res.status(200).json("add data");
+      const { device_id, sensor_idx, value } = req.body;
+
+      console.log({ device_id, sensor_idx, value });
+
+      const addRes = await pool.query(
+        `INSERT INTO sensor_value(device_id, sensor_idx, value, reading_time)
+        VALUES ($1, $2, $3, NOW())
+        RETURNING *`,
+        [device_id, sensor_idx, value]
+      );
+
+      console.log(addRes.rows);
+
+      return res.status(200).json("Success");
     } catch (error) {
       return res.status(500).json("Server error");
     }
