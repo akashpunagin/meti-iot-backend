@@ -12,14 +12,10 @@ function isValidEmail(userEmail) {
 
 function handleAuthReq(req) {
   const {
-    //TODO delete two lines if not needed
-    role,
     userId,
-
     email,
     firstName,
     lastName,
-
     country,
     state,
     city,
@@ -73,7 +69,7 @@ function handleAuthReq(req) {
     }
   }
 
-  if (req.path === "/delete-user" || req.path === "/delete-admin") {
+  if (req.path === "/delete-user") {
     if (![userId].every(Boolean)) {
       return missingCredsMessage;
     }
@@ -206,10 +202,6 @@ function handleAuthReq(req) {
 //     }
 //   }
 // }
-
-function isFileLinkCredsPresent(fileLinkUrl, fileLinkLabel) {
-  return fileLinkUrl !== undefined && fileLinkLabel !== undefined;
-}
 
 // function handleTweetReq(req) {
 //   const { tweetText, groupIds, fileLinkUrl, fileLinkLabel } = req.body;

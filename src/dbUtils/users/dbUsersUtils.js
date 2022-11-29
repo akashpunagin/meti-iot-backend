@@ -29,7 +29,7 @@ async function isUserExistsByUserEmail(email) {
 
 async function getUserByUserId(userId) {
   const getUserRes = await pool.query(
-    `SELECT user_id, user_first_name, user_last_name, email, user_sap_id
+    `SELECT user_id, first_name, last_name, email, country, state, city, zip, contact_number
     FROM ${users}
     WHERE user_id = $1`,
     [userId]
@@ -38,10 +38,14 @@ async function getUserByUserId(userId) {
 
   return {
     userId: getUser.user_id,
-    firstName: getUser.user_first_name,
-    lastName: getUser.user_last_name,
+    firstName: getUser.first_name,
+    lastName: getUser.last_name,
     email: getUser.email,
-    sapId: getUser.user_sap_id,
+    country: getUser.country,
+    state: getUser.state,
+    city: getUser.city,
+    zip: getUser.zip,
+    contactNumber: getUser.contactNumber,
   };
 }
 

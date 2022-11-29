@@ -11,11 +11,11 @@ module.exports = (router) => {
     console.log("Route:", req.path);
 
     const {
-      usersTable,
-      userVerificationTokensTable,
-      userRoleTable,
-      userDetailsTable,
-      userPermissionTable,
+      users,
+      userVerificationTokens,
+      userRole,
+      userDetails,
+      userPermission,
     } = appConstants.SQL_TABLE;
 
     try {
@@ -32,7 +32,7 @@ module.exports = (router) => {
       const user = await getUserByUserId(userId);
 
       const deleteuserPermissionRes = await pool.query(
-        `DELETE FROM ${userPermissionTable}
+        `DELETE FROM ${userPermission}
           WHERE user_id = $1`,
         [userId]
       );
@@ -40,7 +40,7 @@ module.exports = (router) => {
       console.log({ deleteuserPermission });
 
       const deleteuserVerificationTokenRes = await pool.query(
-        `DELETE FROM ${userVerificationTokensTable}
+        `DELETE FROM ${userVerificationTokens}
           WHERE user_id = $1`,
         [userId]
       );
@@ -48,23 +48,15 @@ module.exports = (router) => {
       console.log({ deleteuserVerificationToken });
 
       const deleteuserRoleRes = await pool.query(
-        `DELETE FROM ${userRoleTable}
+        `DELETE FROM ${userRole}
           WHERE user_id = $1`,
         [userId]
       );
       const deleteUserRole = deleteuserRoleRes.rows;
       console.log({ deleteUserRole });
 
-      const deleteUserDetailsRes = await pool.query(
-        `DELETE FROM ${userDetailsTable}
-          WHERE user_id = $1`,
-        [userId]
-      );
-      const deleteUserDetails = deleteUserDetailsRes.rows;
-      console.log({ deleteUserDetails });
-
       const deleteUserRes = await pool.query(
-        `DELETE FROM ${usersTable}
+        `DELETE FROM ${users}
           WHERE user_id = $1
           RETURNING *`,
         [userId]
