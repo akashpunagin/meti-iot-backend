@@ -28,3 +28,5 @@ app.listen(PORT, async () => {
   console.log("Device ID, TOPICS: ", deviceIdtopicsObjs);
   mqttService.saveDataFromTopics(deviceIdtopicsObjs);
 });
+
+module.exports = app;
