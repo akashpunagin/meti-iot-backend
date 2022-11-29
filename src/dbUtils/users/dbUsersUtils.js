@@ -51,15 +51,15 @@ async function getUserByUserId(userId) {
 
 async function getUserRoleByUserId(userId) {
   const userRoleRes = await pool.query(
-    `SELECT ur.role_admin, ur.role_student, ur.role_teacher, ur.role_hod
+    `SELECT ur.role_admin, ur.role_customer
     FROM ${users} as u, 
         ${userRole} as ur
     WHERE u.user_id = ur.user_id
         AND u.user_id = $1`,
     [userId]
   );
-  const userRole = userRoleRes.rows[0];
-  return userRole;
+  const role = userRoleRes.rows[0];
+  return role;
 }
 
 async function getUserPermissionByUserId(userId) {
