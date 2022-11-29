@@ -5,14 +5,14 @@ module.exports = (router) => {
   router.get("/verify-email", async (req, res) => {
     console.log("Route:", req.path);
 
-    const { usersTable, userVerificationTokensTable } = appConstants.SQL_TABLE;
+    const { users, userVerificationTokens } = appConstants.SQL_TABLE;
 
     try {
       const { jwtToken } = req.query;
 
       const userIdWithTokenRes = await pool.query(
         `SELECT u.user_id, v.token
-            FROM ${usersTable} AS u, ${userVerificationTokensTable} as v
+            FROM ${users} AS u, ${userVerificationTokens} as v
             WHERE v.user_id = u.user_id and v.token = $1`,
         [jwtToken]
       );
@@ -27,15 +27,15 @@ module.exports = (router) => {
 
       // update this userIds verified column
       await pool.query(
-        `UPDATE ${usersTable}
-            SET user_is_verified = True
+        `UPDATE ${users}
+            SET is_verified = True
             WHERE user_id = $1`,
         [userId]
       );
 
       // delete user entry in verification tokens db
       await pool.query(
-        `DELETE FROM ${userVerificationTokensTable}
+        `DELETE FROM ${userVerificationTokens}
             WHERE token = $1`,
         [jwtToken]
       );

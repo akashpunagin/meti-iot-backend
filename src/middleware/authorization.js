@@ -18,15 +18,17 @@ module.exports = async (req, res, next) => {
     const rawPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET);
     const payload = payloadGenerator(rawPayload);
 
+    console.log("Auth middleware, ", { payload });
+
     req.user = payload;
 
     // Verify user refresh token
     const userRefreshTokenRes = await pool.query(
-      `SELECT u.user_refresh_token
+      `SELECT u.refresh_token
       FROM users AS u
       WHERE u.user_id = $1
       `,
-      [req.user.user_id]
+      [req.user.userId]
     );
 
     if (userRefreshTokenRes.rowCount === 0) {

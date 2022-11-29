@@ -41,7 +41,7 @@ module.exports = (router) => {
       }
 
       // check if user email is verified
-      if (user.user_is_verified === false) {
+      if (user.is_verified === false) {
         // send user details if account is not verified
         return res.status(401).json({
           error: "Email not verified yet",
