@@ -1,5 +1,16 @@
 const Pool = require("pg").Pool;
-const isProdMode = () => true;
+require("dotenv").config();
+
+const isProd = process.env.IS_PROD_MODE;
+
+const isProdMode = () => {
+  if (isProd === "false") {
+    return false;
+  } else if (isProd === "true") {
+    return true;
+  }
+  return false;
+};
 
 const pool = isProdMode()
   ? new Pool({
