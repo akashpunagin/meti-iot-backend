@@ -15,10 +15,7 @@ module.exports = async (req, res, next) => {
       return res.status(403).json({ error: "Not Authorized" });
     }
 
-    const rawPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET);
-    const payload = payloadGenerator(rawPayload);
-
-    console.log("Auth middleware, ", { payload });
+    const payload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET);
 
     req.user = payload;
 
