@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mqttService = require("./service/mqtt");
+require("dotenv").config();
 
 //Routers
 const deviceRouter = require("./routes/device/deviceRouter");
@@ -20,6 +21,10 @@ app.use("/device", deviceRouter);
 app.use("/sensorValue", sensorValueRouter);
 app.use("/auth", authRouter);
 app.use("/customer", customerRouter);
+
+app.get("/", (req, res) => {
+  res.send("API working on vercel");
+});
 
 app.listen(PORT, async () => {
   console.log(`Listening to port ${PORT}`);
