@@ -1,17 +1,4 @@
 function payloadGenerator(user) {
-  const {
-    user_id,
-    first_name,
-    last_name,
-    email,
-    country,
-    state,
-    city,
-    zip,
-    address,
-    contact_number,
-  } = user;
-
   return {
     userId: user.user_id,
     firstName: user.first_name,

@@ -32,12 +32,10 @@ module.exports = async (req, res, next) => {
       return res.status(403).json({ error: "Not Authorized" });
     }
 
-    const userRefreshToken = userRefreshTokenRes.rows[0].user_refresh_token;
+    const userRefreshToken = userRefreshTokenRes.rows[0].refresh_token;
 
     if (userRefreshToken === null) {
-      console.log(
-        `User ${req.user.user_first_name} does not have refresh token`
-      );
+      console.log(`User ${req.user.first_name} does not have refresh token`);
       return res.status(403).json({ error: "Not Authorized" });
     }
 
