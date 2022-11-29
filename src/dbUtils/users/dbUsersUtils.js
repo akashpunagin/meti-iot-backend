@@ -1,0 +1,82 @@
+const pool = require("../../db/pool");
+const appConstants = require("../../constants/appConstants");
+
+const { users, userRole, userPermission } = appConstants.SQL_TABLE;
+
+async function isUserExistsByUserId(userId) {
+  const addUsersRes = await pool.query(`SELECT user_id FROM ${users}`);
+  const allUsers = addUsersRes.rows;
+
+  const isUserExists = allUsers.some((user) => {
+    return user.user_id === userId;
+  });
+  return isUserExists;
+}
+
+async function isUserExistsByUserEmail(email) {
+  const addUsersRes = await pool.query(
+    `SELECT user_id FROM ${users}
+    WHERE email = $1`,
+    [email]
+  );
+
+  if (addUsersRes.rowCount === 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+async function getUserByUserId(userId) {
+  const getUserRes = await pool.query(
+    `SELECT user_id, user_first_name, user_last_name, email, user_sap_id
+    FROM ${users}
+    WHERE user_id = $1`,
+    [userId]
+  );
+  const getUser = getUserRes.rows[0];
+
+  return {
+    userId: getUser.user_id,
+    firstName: getUser.user_first_name,
+    lastName: getUser.user_last_name,
+    email: getUser.email,
+    sapId: getUser.user_sap_id,
+  };
+}
+
+async function getUserRoleByUserId(userId) {
+  const userRoleRes = await pool.query(
+    `SELECT ur.role_admin, ur.role_student, ur.role_teacher, ur.role_hod
+    FROM ${users} as u, 
+        ${userRole} as ur
+    WHERE u.user_id = ur.user_id
+        AND u.user_id = $1`,
+    [userId]
+  );
+  const userRole = userRoleRes.rows[0];
+  return userRole;
+}
+
+async function getUserPermissionByUserId(userId) {
+  const userPermissionRes = await pool.query(
+    `SELECT up.perm_view_tweet, up.perm_send_tweet
+    FROM ${users} as u, 
+        ${userPermission} as up
+    WHERE u.user_id = up.user_id
+        AND u.user_id = $1`,
+    [userId]
+  );
+  const userPermission = userPermissionRes.rows[0];
+  return userPermission;
+}
+
+module.exports = {
+  isUserExistsByUserId,
+  isUserExistsByUserEmail,
+
+  getUserByUserId,
+
+  getUserRoleByUserId,
+  getUserPermissionByUserId,
+};

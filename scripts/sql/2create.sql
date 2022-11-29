@@ -1,11 +1,12 @@
-CREATE TABLE customer(
+CREATE TABLE users(
     -- indentification and verification
-    customer_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     is_verified BOOLEAN DEFAULT FALSE NOT NULL,
 
-    -- customer details
+    -- user details
     email VARCHAR UNIQUE NOT NULL,
-    name VARCHAR NOT NULL,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
     country VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
     city VARCHAR NOT NULL,
@@ -13,14 +14,35 @@ CREATE TABLE customer(
     address VARCHAR NOT NULL,
     contact_number VARCHAR NOT NULL,
 
-    -- customer confidential information
+    -- user confidential information
     password VARCHAR(255) NOT NULL,
     refresh_token VARCHAR
 );
 
+-- to store tokens while user email verification
+CREATE TABLE user_verification_tokens(
+    user_id uuid PRIMARY KEY REFERENCES users,
+    token VARCHAR NOT NULL
+);
+
+-- role of each users will be defined in this table
+CREATE TABLE user_role(
+    user_id uuid PRIMARY KEY REFERENCES users,
+    role_admin BOOLEAN DEFAULT FALSE,
+    role_customer BOOLEAN DEFAULT FALSE
+);
+
+-- permissions of users will be defined here
+CREATE TABLE user_permission(
+    user_id uuid PRIMARY KEY REFERENCES users,
+    perm_add_device BOOLEAN DEFAULT FALSE,
+    perm_add_customer BOOLEAN DEFAULT FALSE,
+    perm_add_sensor BOOLEAN DEFAULT FALSE
+);
+
 CREATE TABLE device(
     device_id VARCHAR PRIMARY KEY, --"MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id--
-    customer_id uuid REFERENCES customer,
+    user_id uuid REFERENCES users,
 
     client_topic VARCHAR NOT NULL UNIQUE, --topic name--
 

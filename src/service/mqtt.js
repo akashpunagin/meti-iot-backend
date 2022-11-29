@@ -1,15 +1,11 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
 const mqtt = require("mqtt");
 
 const URL = "mqtt://eapl.rvce.edu.in:1884";
 
 async function getTopics() {
   try {
-    const response = await fetch("http://localhost:8080/device/getTopics", {
-      method: "GET",
-      // headers: { "Content-Type": "application/json" },
-      // body: "{}",
-    });
+    const response = await axios.get("http://localhost:8080/device/getTopics");
     return await response.json();
   } catch (error) {
     return false;

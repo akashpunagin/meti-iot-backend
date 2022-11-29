@@ -7,6 +7,7 @@ const mqttService = require("./service/mqtt");
 const tempRouter = require("./routes/temp/tempRouter");
 const deviceRouter = require("./routes/device/deviceRouter");
 const sensorValueRouter = require("./routes/sensorValue/sensorValueRouter");
+const authRouter = require("./routes/auth/authRouter");
 
 const PORT = process.env.PORT || 8080;
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/temp", tempRouter);
 app.use("/device", deviceRouter);
 app.use("/sensorValue", sensorValueRouter);
+app.use("/auth", authRouter);
 
 app.listen(PORT, async () => {
   console.log(`Listening to port ${PORT}`);
