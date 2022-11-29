@@ -10,17 +10,17 @@ module.exports = (router) => {
   router.post("/refresh-token", authorizeRefreshToken, async (req, res) => {
     console.log("Route:", req.path);
 
-    const { usersTable } = appConstants.SQL_TABLE;
+    const { users } = appConstants.SQL_TABLE;
 
     try {
-      // res.isVerified and res.user is set by middleware
+      // req.isVerified and req.user is set by middleware
       if (req.isVerified === true) {
         const { refreshToken: oldRefreshToken } = req.body;
 
         const refreshTokenRes = await pool.query(
-          `SELECT user_refresh_token
-              FROM ${usersTable}
-              WHERE user_refresh_token = $1`,
+          `SELECT refresh_token
+              FROM ${users}
+              WHERE refresh_token = $1`,
           [oldRefreshToken]
         );
 
@@ -28,7 +28,7 @@ module.exports = (router) => {
           return res.status(401).json({ error: "No user found" });
         }
 
-        const dbRefreshToken = refreshTokenRes.rows[0].user_refresh_token;
+        const dbRefreshToken = refreshTokenRes.rows[0].refresh_token;
 
         // check if refresh token from user db matches with incomming refresh token
         if (dbRefreshToken !== oldRefreshToken) {
@@ -42,8 +42,8 @@ module.exports = (router) => {
 
         // save refresh token in users database
         await pool.query(
-          `UPDATE ${usersTable}
-              SET user_refresh_token = $1
+          `UPDATE ${users}
+              SET refresh_token = $1
               WHERE user_id = $2`,
           [newRefreshToken, req.user.user_id]
         );
