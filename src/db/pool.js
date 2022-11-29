@@ -1,5 +1,5 @@
 const Pool = require("pg").Pool;
-const isProdMode = () => false;
+const isProdMode = () => true;
 
 const pool = isProdMode()
   ? new Pool({
