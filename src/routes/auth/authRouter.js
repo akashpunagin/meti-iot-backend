@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-require("./authRoutes/register-user")(router);
+require("./authRoutes/register-customer")(router);
 require("./authRoutes/register-admin")(router);
 
 require("./authRoutes/delete-user")(router);

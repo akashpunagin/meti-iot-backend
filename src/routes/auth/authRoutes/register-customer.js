@@ -8,7 +8,7 @@ const appConstants = require("../../../constants/appConstants");
 const addUser = require("./funcAddUser");
 
 module.exports = (router) => {
-  router.post("/register-admin", validateInputs, async (req, res) => {
+  router.post("/register-customer", validateInputs, async (req, res) => {
     console.log("Route:", req.path);
 
     const { users, userVerificationTokens, userPermission, userRole } =
@@ -50,7 +50,7 @@ module.exports = (router) => {
 
       // save role of this user
       const userRoleRes = await pool.query(
-        `INSERT INTO ${userRole}(user_id, role_admin)
+        `INSERT INTO ${userRole}(user_id, role_customer)
         VALUES ($1, true)
         RETURNING *`,
         [newUser.user_id]
@@ -58,9 +58,9 @@ module.exports = (router) => {
       const newUserRole = userRoleRes.rows[0];
       console.log("USER ROLE: ", newUserRole);
 
-      const isAddDevicePermission = true;
-      const isAddCustomerPermission = true;
-      const isAddSensorPermission = true;
+      const isAddDevicePermission = false;
+      const isAddCustomerPermission = false;
+      const isAddSensorPermission = false;
 
       // save permission of this user
       const userPermissionRes = await pool.query(
@@ -109,7 +109,7 @@ module.exports = (router) => {
         contact_number: newUser.contact_number,
       });
     } catch (error) {
-      console.error("Error while registering admin", error);
+      console.error("Error while registering user", error);
       return res.status(500).send("Server error");
     }
   });

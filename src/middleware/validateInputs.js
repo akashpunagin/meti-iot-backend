@@ -10,10 +10,6 @@ function isValidEmail(userEmail) {
   return isValidEmail;
 }
 
-function isValidRole(role) {
-  return role !== "student" && role !== "teacher" && role !== "hod";
-}
-
 function handleAuthReq(req) {
   const {
     //TODO delete two lines if not needed
@@ -33,26 +29,25 @@ function handleAuthReq(req) {
     password,
   } = req.body;
 
-  if (req.path === "/register-user") {
+  if (req.path === "/register-customer") {
     if (
       ![
-        role,
         email,
         firstName,
         lastName,
+        country,
+        state,
+        city,
+        zip,
+        address,
+        contact_number,
         password,
-        sapId,
-        programId,
-        departmentId,
       ].every(Boolean)
     ) {
       return missingCredsMessage;
     }
     if (!isValidEmail(email)) {
       return invalidEmailMessage;
-    }
-    if (isValidRole(role)) {
-      return invalidCredsMessage;
     }
   }
 
