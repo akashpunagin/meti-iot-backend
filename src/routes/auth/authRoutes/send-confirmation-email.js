@@ -7,15 +7,15 @@ module.exports = (router) => {
   router.post("/send-confirmation-email", validateInputs, async (req, res) => {
     console.log("ROUTE:", req.path);
 
-    const { usersTable, userVerificationTokensTable } = appConstants.SQL_TABLE;
+    const { users, userVerificationTokens } = appConstants.SQL_TABLE;
 
     try {
       const { userId } = req.body;
 
       // get token from db
       const getTokenRes = await pool.query(
-        `SELECT u.user_id, u.user_first_name, u.user_last_name, u.user_email, v.token
-              FROM ${usersTable} AS u, ${userVerificationTokensTable} as v
+        `SELECT u.user_id, u.first_name, u.last_name, u.email, v.token
+              FROM ${users} AS u, ${userVerificationTokens} as v
               WHERE v.user_id = u.user_id and v.user_id = $1`,
         [userId]
       );
@@ -24,9 +24,9 @@ module.exports = (router) => {
         return res.status(401).json({ error: "Invalid data" });
       }
 
-      const firstName = getTokenRes.rows[0].user_first_name;
-      const lastName = getTokenRes.rows[0].user_last_name;
-      const email = getTokenRes.rows[0].user_email;
+      const firstName = getTokenRes.rows[0].first_name;
+      const lastName = getTokenRes.rows[0].last_name;
+      const email = getTokenRes.rows[0].email;
       const token = getTokenRes.rows[0].token;
 
       // send confirmation email

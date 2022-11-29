@@ -17,9 +17,6 @@ module.exports = (router) => {
       // destructure req body
       const { email, password } = req.body;
 
-      // TODO delete
-      console.log({ email, password });
-
       // check if user doesnt exist if not throw error
       const usersRes = await pool.query(
         `SELECT * FROM ${users}
@@ -37,10 +34,7 @@ module.exports = (router) => {
       const user = usersRes.rows[0];
 
       // check password valid
-      const isValidPassword = await bcrypt.compare(
-        password,
-        user.user_password
-      );
+      const isValidPassword = await bcrypt.compare(password, user.password);
 
       if (!isValidPassword) {
         return res.status(401).json({ error: "Password is incorrect" });
@@ -53,8 +47,8 @@ module.exports = (router) => {
           error: "Email not verified yet",
           user: {
             userId: user.user_id,
-            firstName: user.user_first_name,
-            lastName: user.user_last_name,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.email,
           },
         });
@@ -67,7 +61,7 @@ module.exports = (router) => {
       // save refresh token in users database
       await pool.query(
         `UPDATE ${users}
-            SET user_refresh_token = $1
+            SET refresh_token = $1
             WHERE user_id = $2`,
         [refreshToken, user.user_id]
       );

@@ -4,7 +4,6 @@ require("dotenv").config();
 
 function accessTokenGenerator(user) {
   const payload = payloadGenerator(user);
-  console.log("ACCESS TOKEN", { env: process.env, payload });
 
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
