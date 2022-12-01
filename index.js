@@ -36,5 +36,4 @@ app.listen(PORT, async () => {
 
 module.exports = app;
 
-//TODO get my devices
 //TODO that device's sensor values
