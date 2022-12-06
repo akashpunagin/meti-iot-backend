@@ -2,6 +2,8 @@ const axios = require("axios");
 const mqtt = require("mqtt");
 require("dotenv").config();
 
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 const MQTT_URL = process.env.MQTT_URL;
 const MQTT_PORT = process.env.MQTT_PORT;
 const BASE_URL = process.env.BASE_URL;
@@ -73,12 +75,14 @@ function saveDataFromTopics(deviceIdtopicsObjs) {
 
   const client = mqtt.connect(URL, options);
 
-  client.on("connect", function () {
+  client.on("connect", async function () {
     console.log("CONNECTED");
 
     for (let i = 0; i < deviceIdtopicsObjs.length; i++) {
       const deviceIdtopicsObj = deviceIdtopicsObjs[i];
       const TOPIC = deviceIdtopicsObj.topic;
+
+      await delay(3000);
 
       client.subscribe(TOPIC, function (err) {
         if (!err) {
