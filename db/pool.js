@@ -1,28 +1,18 @@
 const Pool = require("pg").Pool;
 require("dotenv").config();
 
-const isProd = process.env.IS_PROD_MODE;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_DATABASE = process.env.DB_DATABASE;
 
-const isProdMode = () => {
-  if (isProd === "false") {
-    return false;
-  } else if (isProd === "true") {
-    return true;
-  }
-  return false;
-};
-
-const pool = isProdMode()
-  ? new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-    })
-  : new Pool({
-      user: "me",
-      password: "password",
-      host: "localhost",
-      port: 5432,
-      database: "meti",
-    });
+const pool = new Pool({
+  user: DB_USER,
+  password: DB_PASSWORD,
+  host: DB_HOST,
+  port: DB_PORT,
+  database: DB_DATABASE,
+});
 
 module.exports = pool;

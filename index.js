@@ -11,7 +11,7 @@ const authRouter = require("./routes/auth/authRouter");
 const customerRouter = require("./routes/customer/customerRouter");
 const profileRouter = require("./routes/profile/profileRouter");
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 // Middlewares
 app.use(cors());
@@ -32,10 +32,10 @@ app.listen(PORT, async () => {
   console.log(`Listening to port ${PORT}`);
   const deviceIdtopicsObjs = await mqttService.getTopics();
 
-  console.log("Device ID, TOPICS: ", deviceIdtopicsObjs);
+  console.log("index.js: Device ID, TOPICS: ", deviceIdtopicsObjs);
   mqttService.saveDataFromTopics(deviceIdtopicsObjs);
 });
 
 module.exports = app;
 
-//TODO that device's sensor values
+//TODO admin - get all devices with customer name

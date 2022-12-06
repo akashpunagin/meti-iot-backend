@@ -1,16 +1,7 @@
 const nodemailer = require("nodemailer");
+
 require("dotenv").config();
-
-const isProd = process.env.IS_PROD_MODE;
-
-const isProdMode = () => {
-  if (isProd === "false") {
-    return false;
-  } else if (isProd === "true") {
-    return true;
-  }
-  return false;
-};
+const BASE_URL = process.env.BASE_URL;
 
 const transport = nodemailer.createTransport({
   service: "Gmail",
@@ -21,9 +12,7 @@ const transport = nodemailer.createTransport({
 });
 
 sendConfirmationEmail = async (name, email, jwtToken) => {
-  const link = `${
-    isProdMode() ? process.env.BASE_URL : "http://localhost:8080"
-  }/auth/verify-email?jwtToken=${jwtToken}`;
+  const link = `${BASE_URL}/auth/verify-email?jwtToken=${jwtToken}`;
 
   try {
     const temp = await transport.sendMail({

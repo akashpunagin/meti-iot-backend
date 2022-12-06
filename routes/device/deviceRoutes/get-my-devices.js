@@ -14,6 +14,7 @@ module.exports = (router) => {
         [req.user.userId]
       );
       const data = getRes.rows.map((temp) => {
+        //TODO change this or remove this (change key value from underscore to cap case)
         return temp;
       });
       return res.status(200).json(data);
