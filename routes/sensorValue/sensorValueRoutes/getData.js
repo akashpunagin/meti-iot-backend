@@ -32,7 +32,7 @@ module.exports = (router) => {
 
       console.log("Unique sensors of device id:", uniqueSensorNames);
 
-      const arrayHashmap = data.reduce((obj, item) => {
+      const actualData = data.reduce((obj, item) => {
         if (obj[item.sensor_name]) {
           obj[item.sensor_name].push({
             value: item.value,
@@ -50,7 +50,10 @@ module.exports = (router) => {
         return obj;
       }, {});
 
-      return res.status(200).json(arrayHashmap);
+      return res.status(200).json({
+        uniqueSensorNames,
+        actualData,
+      });
     } catch (error) {
       console.log("GET SENSOR VALUE ERROR:", error);
       return res.status(500).json("Server error");
