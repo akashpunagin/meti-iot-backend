@@ -2,7 +2,7 @@ const pool = require("../../../db/pool");
 const validateInputs = require("../../../middleware/validateInputs");
 
 module.exports = (router) => {
-  router.get("/getData", [validateInputs], async (req, res) => {
+  router.post("/getData", [validateInputs], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { deviceId } = req.body;
