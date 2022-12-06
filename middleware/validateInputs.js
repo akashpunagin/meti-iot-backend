@@ -133,15 +133,29 @@ function handleDeviceReq(req) {
   }
 }
 
+function handleSensorValueError(req) {
+  const { deviceId } = req.body;
+
+  if (req.path === "/getData") {
+    if (![deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
+  const sensorValueError = handleSensorValueError(req);
 
   if (authError) {
     return res.status(401).json({ error: authError });
   }
   if (deviceError) {
     return res.status(401).json({ error: deviceError });
+  }
+  if (sensorValueError) {
+    return res.status(401).json({ error: sensorValueError });
   }
 
   next();
