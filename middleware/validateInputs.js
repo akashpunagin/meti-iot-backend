@@ -134,10 +134,15 @@ function handleDeviceReq(req) {
 }
 
 function handleSensorValueError(req) {
-  const { deviceId } = req.body;
+  const { deviceId, parameter } = req.body;
 
-  if (req.path === "/getData") {
+  if (req.path === "/get-all-data") {
     if (![deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+  if (req.path === "/get-data") {
+    if (![deviceId, parameter].every(Boolean)) {
       return missingCredsMessage;
     }
   }
