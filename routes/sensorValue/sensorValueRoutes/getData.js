@@ -18,6 +18,7 @@ module.exports = (router) => {
         v.device_id = m.device_id AND
         v.sensor_idx = m.sensor_idx AND
         v.device_id = $1
+      ORDER BY v.reading_time
       `,
         [deviceId]
       );
