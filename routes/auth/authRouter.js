@@ -13,5 +13,6 @@ require("./authRoutes/login")(router);
 require("./authRoutes/is-token-valid")(router);
 require("./authRoutes/logout")(router);
 require("./authRoutes/is-admin")(router);
+require("./authRoutes/my-role")(router);
 
 module.exports = router;
