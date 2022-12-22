@@ -171,10 +171,21 @@ function handleSensorValueError(req) {
   }
 }
 
+function handleTenetReq(req) {
+  const { customerId } = req.body;
+
+  if (req.path === "/get") {
+    if (![customerId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
   const sensorValueError = handleSensorValueError(req);
+  const tenentError = handleTenetReq(req);
 
   if (authError) {
     return res.status(401).json({ error: authError });
@@ -184,6 +195,9 @@ module.exports = (req, res, next) => {
   }
   if (sensorValueError) {
     return res.status(401).json({ error: sensorValueError });
+  }
+  if (tenentError) {
+    return res.status(401).json({ error: tenentError });
   }
 
   next();
