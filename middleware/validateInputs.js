@@ -24,6 +24,29 @@ function handleAuthReq(req) {
     password,
   } = req.body;
 
+  if (req.path === "/register-admin") {
+    if (
+      ![
+        email,
+        firstName,
+        lastName,
+        country,
+        state,
+        city,
+        zip,
+        address,
+        contact_number,
+        password,
+      ].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+
+    if (!isValidEmail(email)) {
+      return invalidEmailMessage;
+    }
+  }
+
   if (req.path === "/register-customer") {
     if (
       ![
@@ -46,7 +69,7 @@ function handleAuthReq(req) {
     }
   }
 
-  if (req.path === "/register-admin") {
+  if (req.path === "/register-tenent") {
     if (
       ![
         email,

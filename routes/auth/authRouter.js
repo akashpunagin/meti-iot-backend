@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 require("./authRoutes/register-customer")(router);
 require("./authRoutes/register-admin")(router);
+require("./authRoutes/register-tenent")(router);
 
 require("./authRoutes/delete-user")(router);
 

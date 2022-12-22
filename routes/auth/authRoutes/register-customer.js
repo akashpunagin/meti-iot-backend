@@ -61,17 +61,25 @@ module.exports = (router) => {
       const isAddDevicePermission = false;
       const isAddCustomerPermission = false;
       const isAddSensorPermission = false;
+      const isAddTenentPermission = true;
 
       // save permission of this user
       const userPermissionRes = await pool.query(
-        `INSERT INTO ${userPermission}(user_id, perm_add_device, perm_add_customer, perm_add_sensor)
-        VALUES ($1, $2, $3, $4)
+        `INSERT INTO ${userPermission}(
+          user_id,
+          perm_add_device,
+          perm_add_customer,
+          perm_add_sensor,
+          perm_add_tenent
+        )
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *`,
         [
           newUser.user_id,
           isAddDevicePermission,
           isAddCustomerPermission,
           isAddSensorPermission,
+          isAddTenentPermission,
         ]
       );
       const newUserPermission = userPermissionRes.rows[0];
