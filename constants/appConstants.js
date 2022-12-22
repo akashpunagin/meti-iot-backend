@@ -25,6 +25,7 @@ const constants = {
     sensorMaster: "sensor_master",
     sensorValue: "sensor_value",
     customerTenent: "customer_tenent",
+    deviceTenent: "device_tenent",
   },
 };
 

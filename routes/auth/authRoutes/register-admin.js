@@ -58,7 +58,7 @@ module.exports = (router) => {
       const newUserRole = userRoleRes.rows[0];
       console.log("USER ROLE: ", newUserRole);
 
-      const isAddDevicePermission = false;
+      const isAddDevicePermission = true;
       const isAddCustomerPermission = true;
       const isAddSensorPermission = false;
       const isAddTenentPermission = false;
