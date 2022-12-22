@@ -1,7 +1,6 @@
 const pool = require("../../../../../db/pool");
 const {
   authorization,
-  authorizeAdmin,
 } = require("../../../../../middleware/exportMiddlewares");
 const appConstants = require("../../../../../constants/appConstants");
 

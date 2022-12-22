@@ -181,23 +181,37 @@ function handleTenetReq(req) {
   }
 }
 
+function handleCustomerReq(req) {
+  const { tenentId, deviceId } = req.body;
+
+  if (req.path === "/add") {
+    if (![tenentId, deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
   const sensorValueError = handleSensorValueError(req);
   const tenentError = handleTenetReq(req);
+  const customerError = handleCustomerReq(req);
 
   if (authError) {
     return res.status(401).json({ error: authError });
   }
-  if (deviceError) {
+  if (req.originalUrl.includes("/device/") && deviceError) {
     return res.status(401).json({ error: deviceError });
   }
-  if (sensorValueError) {
+  if (req.originalUrl.includes("/sensor/") && sensorValueError) {
     return res.status(401).json({ error: sensorValueError });
   }
-  if (tenentError) {
+  if (req.originalUrl.includes("/tenent/") && tenentError) {
     return res.status(401).json({ error: tenentError });
+  }
+  if (req.originalUrl.includes("/customer/") && customerError) {
+    return res.status(401).json({ error: customerError });
   }
 
   next();
