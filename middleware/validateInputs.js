@@ -189,6 +189,11 @@ function handleCustomerReq(req) {
       return missingCredsMessage;
     }
   }
+  if (req.path === "/delete") {
+    if (![tenentId, deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
 }
 
 module.exports = (req, res, next) => {
