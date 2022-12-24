@@ -45,7 +45,7 @@ async function getUserByUserId(userId) {
     state: getUser.state,
     city: getUser.city,
     zip: getUser.zip,
-    contactNumber: getUser.contactNumber,
+    contactNumber: getUser.contact_number,
   };
 }
 

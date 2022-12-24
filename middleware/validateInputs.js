@@ -24,6 +24,29 @@ function handleAuthReq(req) {
     password,
   } = req.body;
 
+  if (req.path === "/register-admin") {
+    if (
+      ![
+        email,
+        firstName,
+        lastName,
+        country,
+        state,
+        city,
+        zip,
+        address,
+        contact_number,
+        password,
+      ].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+
+    if (!isValidEmail(email)) {
+      return invalidEmailMessage;
+    }
+  }
+
   if (req.path === "/register-customer") {
     if (
       ![
@@ -46,7 +69,7 @@ function handleAuthReq(req) {
     }
   }
 
-  if (req.path === "/register-admin") {
+  if (req.path === "/register-tenent") {
     if (
       ![
         email,
@@ -148,19 +171,52 @@ function handleSensorValueError(req) {
   }
 }
 
+function handleTenetReq(req) {
+  const { customerId } = req.body;
+
+  if (req.path === "/get") {
+    if (![customerId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
+function handleCustomerReq(req) {
+  const { tenentId, deviceId } = req.body;
+
+  if (req.path === "/add") {
+    if (![tenentId, deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+  if (req.path === "/delete") {
+    if (![tenentId, deviceId].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
   const sensorValueError = handleSensorValueError(req);
+  const tenentError = handleTenetReq(req);
+  const customerError = handleCustomerReq(req);
 
   if (authError) {
     return res.status(401).json({ error: authError });
   }
-  if (deviceError) {
+  if (req.originalUrl.includes("/device/") && deviceError) {
     return res.status(401).json({ error: deviceError });
   }
-  if (sensorValueError) {
+  if (req.originalUrl.includes("/sensor/") && sensorValueError) {
     return res.status(401).json({ error: sensorValueError });
+  }
+  if (req.originalUrl.includes("/tenent/") && tenentError) {
+    return res.status(401).json({ error: tenentError });
+  }
+  if (req.originalUrl.includes("/customer/") && customerError) {
+    return res.status(401).json({ error: customerError });
   }
 
   next();
