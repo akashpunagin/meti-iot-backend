@@ -9,22 +9,22 @@ module.exports = (router) => {
   router.post("/add", [validateInputs, authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { deviceTenent } = appConstants.SQL_TABLE;
+    const { deviceTenant } = appConstants.SQL_TABLE;
 
     try {
-      const { tenentId, deviceId } = req.body;
+      const { tenantId, deviceId } = req.body;
 
       const addRes = await pool.query(
-        `INSERT INTO ${deviceTenent}(device_id,tenent_id)
+        `INSERT INTO ${deviceTenant}(device_id,tenant_id)
         VALUES($1, $2)
         RETURNING *`,
-        [deviceId, tenentId]
+        [deviceId, tenantId]
       );
 
       const data = addRes.rows;
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET DEVICE TENENTS ERROR", error);
+      console.log("GET DEVICE TenantS ERROR", error);
       return res.status(500).json("Server error");
     }
   });

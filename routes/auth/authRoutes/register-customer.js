@@ -61,7 +61,7 @@ module.exports = (router) => {
       const isAddDevicePermission = false;
       const isAddCustomerPermission = false;
       const isAddSensorPermission = false;
-      const isAddTenentPermission = true;
+      const isAddTenantPermission = true;
 
       // save permission of this user
       const userPermissionRes = await pool.query(
@@ -70,7 +70,7 @@ module.exports = (router) => {
           perm_add_device,
           perm_add_customer,
           perm_add_sensor,
-          perm_add_tenent
+          perm_add_tenant
         )
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *`,
@@ -79,7 +79,7 @@ module.exports = (router) => {
           isAddDevicePermission,
           isAddCustomerPermission,
           isAddSensorPermission,
-          isAddTenentPermission,
+          isAddTenantPermission,
         ]
       );
       const newUserPermission = userPermissionRes.rows[0];

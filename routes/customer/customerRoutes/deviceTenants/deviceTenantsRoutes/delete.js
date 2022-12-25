@@ -12,24 +12,24 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { deviceTenent } = appConstants.SQL_TABLE;
+      const { deviceTenant } = appConstants.SQL_TABLE;
 
       try {
-        const { tenentId, deviceId } = req.body;
+        const { tenantId, deviceId } = req.body;
 
         const delRes = await pool.query(
-          `DELETE FROM ${deviceTenent}
+          `DELETE FROM ${deviceTenant}
           WHERE
             device_id = $1 AND
-            tenent_id = $2
+            tenant_id = $2
         RETURNING *`,
-          [deviceId, tenentId]
+          [deviceId, tenantId]
         );
 
         const data = delRes.rows;
         return res.status(200).json(data);
       } catch (error) {
-        console.log("GET DEVICE TENENTS ERROR", error);
+        console.log("GET DEVICE TenantS ERROR", error);
         return res.status(500).json("Server error");
       }
     }

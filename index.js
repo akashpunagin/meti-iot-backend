@@ -10,7 +10,7 @@ const sensorValueRouter = require("./routes/sensorValue/sensorValueRouter");
 const authRouter = require("./routes/auth/authRouter");
 const customerRouter = require("./routes/customer/customerRouter");
 const profileRouter = require("./routes/profile/profileRouter");
-const tenentRouter = require("./routes/tenent/tenentRouter");
+const tenantRouter = require("./routes/tenant/tenantRouter");
 
 const PORT = process.env.PORT;
 
@@ -24,7 +24,7 @@ app.use("/sensorValue", sensorValueRouter);
 app.use("/auth", authRouter);
 app.use("/customer", customerRouter);
 app.use("/profile", profileRouter);
-app.use("/tenent", tenentRouter);
+app.use("/tenant", tenantRouter);
 
 app.get("/", (req, res) => {
   res.send("API working on vercel");

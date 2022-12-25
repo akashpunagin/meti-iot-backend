@@ -69,7 +69,7 @@ function handleAuthReq(req) {
     }
   }
 
-  if (req.path === "/register-tenent") {
+  if (req.path === "/register-tenant") {
     if (
       ![
         email,
@@ -182,15 +182,15 @@ function handleTenetReq(req) {
 }
 
 function handleCustomerReq(req) {
-  const { tenentId, deviceId } = req.body;
+  const { tenantId, deviceId } = req.body;
 
   if (req.path === "/add") {
-    if (![tenentId, deviceId].every(Boolean)) {
+    if (![tenantId, deviceId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
   if (req.path === "/delete") {
-    if (![tenentId, deviceId].every(Boolean)) {
+    if (![tenantId, deviceId].every(Boolean)) {
       return missingCredsMessage;
     }
   }
@@ -200,7 +200,7 @@ module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
   const sensorValueError = handleSensorValueError(req);
-  const tenentError = handleTenetReq(req);
+  const tenantError = handleTenetReq(req);
   const customerError = handleCustomerReq(req);
 
   if (authError) {
@@ -212,8 +212,8 @@ module.exports = (req, res, next) => {
   if (req.originalUrl.includes("/sensor/") && sensorValueError) {
     return res.status(401).json({ error: sensorValueError });
   }
-  if (req.originalUrl.includes("/tenent/") && tenentError) {
-    return res.status(401).json({ error: tenentError });
+  if (req.originalUrl.includes("/tenant/") && tenantError) {
+    return res.status(401).json({ error: tenantError });
   }
   if (req.originalUrl.includes("/customer/") && customerError) {
     return res.status(401).json({ error: customerError });

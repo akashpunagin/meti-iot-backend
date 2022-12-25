@@ -30,7 +30,7 @@ CREATE TABLE user_role(
     user_id uuid PRIMARY KEY REFERENCES users,
     role_admin BOOLEAN DEFAULT FALSE,
     role_customer BOOLEAN DEFAULT FALSE,
-    role_tenent BOOLEAN DEFAULT FALSE
+    role_tenant BOOLEAN DEFAULT FALSE
 );
 
 -- permissions of users will be defined here
@@ -39,13 +39,13 @@ CREATE TABLE user_permission(
     perm_add_device BOOLEAN DEFAULT FALSE,
     perm_add_customer BOOLEAN DEFAULT FALSE,
     perm_add_sensor BOOLEAN DEFAULT FALSE,
-    perm_add_tenent BOOLEAN DEFAULT FALSE
+    perm_add_tenant BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE customer_tenent(
+CREATE TABLE customer_tenant(
     customer_id uuid REFERENCES users,
-    tenent_id uuid REFERENCES users,
-    PRIMARY KEY(customer_id, tenent_id)
+    tenant_id uuid REFERENCES users,
+    PRIMARY KEY(customer_id, tenant_id)
 );
 
 CREATE TABLE device(
@@ -71,10 +71,10 @@ CREATE TABLE device(
     u_conn_ssid VARCHAR NULL
 );
 
-CREATE TABLE device_tenent(
-    tenent_id uuid REFERENCES users,
+CREATE TABLE device_tenant(
+    tenant_id uuid REFERENCES users,
     device_id VARCHAR REFERENCES device,
-    PRIMARY KEY(tenent_id, device_id)
+    PRIMARY KEY(tenant_id, device_id)
 );
 
 --for each device, which sensor has what name and measurement--

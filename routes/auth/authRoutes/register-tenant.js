@@ -13,7 +13,7 @@ const { getUserByUserId } = require("../../../dbUtils/users/dbUsersUtils");
 
 module.exports = (router) => {
   router.post(
-    "/register-tenent",
+    "/register-tenant",
     [validateInputs, authorization],
     async (req, res) => {
       console.log("Route:", req.path);
@@ -23,7 +23,7 @@ module.exports = (router) => {
         userVerificationTokens,
         userPermission,
         userRole,
-        customerTenent,
+        customerTenant,
       } = appConstants.SQL_TABLE;
 
       try {
@@ -62,7 +62,7 @@ module.exports = (router) => {
 
         // save role of this user
         const userRoleRes = await pool.query(
-          `INSERT INTO ${userRole}(user_id, role_tenent)
+          `INSERT INTO ${userRole}(user_id, role_tenant)
         VALUES ($1, true)
         RETURNING *`,
           [newUser.user_id]
@@ -73,7 +73,7 @@ module.exports = (router) => {
         const isAddDevicePermission = false;
         const isAddCustomerPermission = false;
         const isAddSensorPermission = false;
-        const isAddTenentPermission = true;
+        const isAddTenantPermission = true;
 
         // save permission of this user
         const userPermissionRes = await pool.query(
@@ -82,7 +82,7 @@ module.exports = (router) => {
           perm_add_device,
           perm_add_customer,
           perm_add_sensor,
-          perm_add_tenent
+          perm_add_tenant
         )
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *`,
@@ -91,7 +91,7 @@ module.exports = (router) => {
             isAddDevicePermission,
             isAddCustomerPermission,
             isAddSensorPermission,
-            isAddTenentPermission,
+            isAddTenantPermission,
           ]
         );
         const newUserPermission = userPermissionRes.rows[0];
@@ -116,11 +116,11 @@ module.exports = (router) => {
           [newUser.user_id, accessToken]
         );
 
-        //Map Tenent and Customer
+        //Map Tenant and Customer
         const customerUserId = req.user.userId;
 
         await pool.query(
-          `INSERT INTO ${customerTenent}(customer_id, tenent_id)
+          `INSERT INTO ${customerTenant}(customer_id, tenant_id)
             VALUES($1, $2)`,
           [customerUserId, newUser.user_id]
         );

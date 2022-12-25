@@ -25,7 +25,7 @@ module.exports = (router) => {
       const {
         role_admin: roleAdmin,
         role_customer: roleCustomer,
-        role_tenent: roleTenent,
+        role_tenant: roleTenant,
       } = roles;
 
       let role = null;
@@ -36,8 +36,8 @@ module.exports = (router) => {
       if (roleCustomer) {
         role = "CUSTOMER";
       }
-      if (roleTenent) {
-        role = "TENENT";
+      if (roleTenant) {
+        role = "TENANT";
       }
 
       return res.status(200).json({ role });

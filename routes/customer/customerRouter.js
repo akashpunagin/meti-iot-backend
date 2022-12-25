@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const deviceTenentRouter = require("./customerRoutes/deviceTenents/deviceTenentsRouter");
+const deviceTenantRouter = require("./customerRoutes/deviceTenants/deviceTenantsRouter");
 
 require("./customerRoutes/get-all")(router);
-router.use("/deviceTenents", deviceTenentRouter);
+router.use("/deviceTenants", deviceTenantRouter);
 
 module.exports = router;

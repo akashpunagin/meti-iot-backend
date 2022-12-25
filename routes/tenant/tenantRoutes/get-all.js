@@ -11,27 +11,27 @@ module.exports = (router) => {
   router.get("/get-all", [authorization, authorizeAdmin], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
-    const { users, userRole, customerTenent } = appConstants.SQL_TABLE;
+    const { users, userRole, customerTenant } = appConstants.SQL_TABLE;
 
     try {
       const { customerId } = req.body;
 
-      const getTenentsRes = await pool.query(
-        `SELECT tenent_id
-          FROM ${customerTenent}`
+      const getTenantsRes = await pool.query(
+        `SELECT tenant_id
+          FROM ${customerTenant}`
       );
-      const tenentIds = getTenentsRes.rows.map((tenent) => tenent.tenent_id);
+      const tenantIds = getTenantsRes.rows.map((tenant) => tenant.tenant_id);
 
       const data = [];
-      for (const tenentId of tenentIds) {
-        console.log(tenentId);
-        const tenent = await getUserByUserId(tenentId);
-        data.push(tenent);
+      for (const tenantId of tenantIds) {
+        console.log(tenantId);
+        const tenant = await getUserByUserId(tenantId);
+        data.push(tenant);
       }
 
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET TENENT ERROR", error);
+      console.log("GET Tenant ERROR", error);
       return res.status(500).json("Server error");
     }
   });
