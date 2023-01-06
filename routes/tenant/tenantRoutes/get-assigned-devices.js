@@ -7,16 +7,18 @@ module.exports = (router) => {
     console.log("Route:", req.originalUrl);
 
     const { deviceTenant } = appConstants.SQL_TABLE;
-    const tenet = req.user;
+
+    console.log("SEE", req.user.userId);
 
     try {
-      const addRes = await pool.query(
-        `SELECT FROM ${deviceTenant}
+      const getRes = await pool.query(
+        `SELECT * FROM ${deviceTenant}
         WHERE tenant_id = $1`,
-        [tenet.userId]
+        [req.user.userId]
       );
 
-      const data = addRes.rows;
+      const data = getRes.rows;
+
       return res.status(200).json(data);
     } catch (error) {
       console.log("GET DEVICE TenantS ERROR", error);
