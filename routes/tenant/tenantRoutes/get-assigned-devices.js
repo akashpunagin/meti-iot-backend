@@ -5,7 +5,7 @@ const {
 const appConstants = require("../../../../../constants/appConstants");
 
 module.exports = (router) => {
-  router.post("/get-assigned-devices", [authorization], async (req, res) => {
+  router.get("/get-assigned-devices", [authorization], async (req, res) => {
     console.log("Route:", req.originalUrl);
 
     const { deviceTenant } = appConstants.SQL_TABLE;
