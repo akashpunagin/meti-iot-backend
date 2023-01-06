@@ -12,7 +12,7 @@ module.exports = (router) => {
     try {
       const addRes = await pool.query(
         `SELECT FROM ${deviceTenant}
-        WHERE tenet_id = $1`,
+        WHERE tenant_id = $1`,
         [tenet.userId]
       );
 
