@@ -1,8 +1,6 @@
-const pool = require("../../../../../db/pool");
-const {
-  authorization,
-} = require("../../../../../middleware/exportMiddlewares");
-const appConstants = require("../../../../../constants/appConstants");
+const pool = require("../../../db/pool");
+const { authorization } = require("../../../middleware/exportMiddlewares");
+const appConstants = require("../../../constants/appConstants");
 
 module.exports = (router) => {
   router.get("/get-assigned-devices", [authorization], async (req, res) => {
