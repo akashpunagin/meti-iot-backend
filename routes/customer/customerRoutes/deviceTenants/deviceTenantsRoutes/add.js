@@ -24,7 +24,7 @@ module.exports = (router) => {
       const data = addRes.rows;
       return res.status(200).json(data);
     } catch (error) {
-      console.log("GET DEVICE TenantS ERROR", error);
+      console.log("GET DEVICE Tenants ERROR", error);
       return res.status(500).json("Server error");
     }
   });

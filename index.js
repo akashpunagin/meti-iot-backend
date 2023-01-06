@@ -27,7 +27,7 @@ app.use("/profile", profileRouter);
 app.use("/tenant", tenantRouter);
 
 app.get("/", (req, res) => {
-  res.send("API working on vercel");
+  res.send("API working");
 });
 
 app.listen(PORT, async () => {
