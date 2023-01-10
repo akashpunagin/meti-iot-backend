@@ -196,12 +196,57 @@ function handleCustomerReq(req) {
   }
 }
 
+function handleSensorMasterReq(req) {
+  const {
+    device_id,
+    sensor_idx,
+    sensor_name,
+    sensor_uom,
+    sensor_report_group,
+  } = req.body;
+
+  if (req.path === "/add") {
+    if (
+      ![
+        device_id,
+        sensor_idx,
+        sensor_name,
+        sensor_uom,
+        sensor_report_group,
+      ].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/get-sensors-of-device") {
+    if (![device_id].every(Boolean)) {
+      return missingCredsMessage;
+    }
+  }
+
+  if (req.path === "/delete") {
+    if (
+      ![
+        device_id,
+        sensor_idx,
+        sensor_name,
+        sensor_uom,
+        sensor_report_group,
+      ].every(Boolean)
+    ) {
+      return missingCredsMessage;
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
   const sensorValueError = handleSensorValueError(req);
   const tenantError = handleTenetReq(req);
   const customerError = handleCustomerReq(req);
+  const sensorMasterError = handleSensorMasterReq(req);
 
   if (authError) {
     return res.status(401).json({ error: authError });
@@ -217,6 +262,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/customer/") && customerError) {
     return res.status(401).json({ error: customerError });
+  }
+  if (req.originalUrl.includes("/sensorMaster/") && sensorMasterError) {
+    return res.status(401).json({ error: sensorMasterError });
   }
 
   next();

@@ -11,6 +11,7 @@ const authRouter = require("./routes/auth/authRouter");
 const customerRouter = require("./routes/customer/customerRouter");
 const profileRouter = require("./routes/profile/profileRouter");
 const tenantRouter = require("./routes/tenant/tenantRouter");
+const sensorMasterRouter = require("./routes/sensorMaster/sensorMasterRouter");
 
 const PORT = process.env.PORT;
 
@@ -25,6 +26,7 @@ app.use("/auth", authRouter);
 app.use("/customer", customerRouter);
 app.use("/profile", profileRouter);
 app.use("/tenant", tenantRouter);
+app.use("/sensorMaster", sensorMasterRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
