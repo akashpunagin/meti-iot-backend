@@ -21,13 +21,13 @@ CREATE TABLE users(
 
 -- to store tokens while user email verification
 CREATE TABLE user_verification_tokens(
-    user_id uuid PRIMARY KEY REFERENCES users,
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     token VARCHAR NOT NULL
 );
 
 -- role of each users will be defined in this table
 CREATE TABLE user_role(
-    user_id uuid PRIMARY KEY REFERENCES users,
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     role_admin BOOLEAN DEFAULT FALSE,
     role_customer BOOLEAN DEFAULT FALSE,
     role_tenant BOOLEAN DEFAULT FALSE
@@ -35,7 +35,7 @@ CREATE TABLE user_role(
 
 -- permissions of users will be defined here
 CREATE TABLE user_permission(
-    user_id uuid PRIMARY KEY REFERENCES users,
+    user_id uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     perm_add_device BOOLEAN DEFAULT FALSE,
     perm_add_customer BOOLEAN DEFAULT FALSE,
     perm_add_sensor BOOLEAN DEFAULT FALSE,
@@ -43,14 +43,14 @@ CREATE TABLE user_permission(
 );
 
 CREATE TABLE customer_tenant(
-    customer_id uuid REFERENCES users,
-    tenant_id uuid REFERENCES users,
+    customer_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    tenant_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(customer_id, tenant_id)
 );
 
 CREATE TABLE device(
     device_id VARCHAR PRIMARY KEY, --"MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id--
-    user_id uuid REFERENCES users, --customer id (device belongs to which customer)--
+    user_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE, --customer id (device belongs to which customer)--
 
     client_topic VARCHAR NOT NULL UNIQUE, --topic name--
 
@@ -72,8 +72,8 @@ CREATE TABLE device(
 );
 
 CREATE TABLE device_tenant(
-    tenant_id uuid REFERENCES users,
-    device_id VARCHAR REFERENCES device,
+    tenant_id uuid REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
+    device_id VARCHAR REFERENCES device ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(tenant_id, device_id)
 );
 
@@ -81,7 +81,7 @@ CREATE TABLE device_tenant(
 CREATE TABLE sensor_master(
     sensor_id SERIAL PRIMARY KEY,
     
-    device_id VARCHAR REFERENCES device,
+    device_id VARCHAR REFERENCES device ON DELETE CASCADE ON UPDATE CASCADE,
 
     sensor_idx INT NOT NULL,
     meter_idx INT NOT NULL DEFAULT 0,
@@ -96,7 +96,7 @@ CREATE TABLE sensor_master(
 CREATE TABLE sensor_value(
     id SERIAL,
     
-    device_id VARCHAR REFERENCES device(device_id), -- "MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id
+    device_id VARCHAR REFERENCES device(device_id) ON DELETE CASCADE ON UPDATE CASCADE, -- "MQI1-90-38-0C-57-58-BC/v2/0/sensor_values"; in this "MQI1-90-38-0C-57-58-BC" this is device id
     sensor_idx INT,
 
     meter_idx INT NOT NULL DEFAULT 0,
