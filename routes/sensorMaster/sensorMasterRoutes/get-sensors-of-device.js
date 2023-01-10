@@ -16,25 +16,22 @@ module.exports = (router) => {
       const { sensorMaster } = appConstants.SQL_TABLE;
 
       try {
-        const {
-          device_id,
-          sensor_idx,
-          sensor_name,
-          sensor_uom,
-          sensor_report_group,
-        } = req.body;
+        const { device_id } = req.body;
 
-        const addRes = await pool.query(
-          `INSERT INTO ${sensorMaster}(device_id, sensor_idx, sensor_name, sensor_uom, sensor_report_group)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *`,
-          [device_id, sensor_idx, sensor_name, sensor_uom, sensor_report_group]
+        const getRes = await pool.query(
+          `SELECT * FROM ${sensorMaster}
+            WHERE device_id = $1`,
+          [device_id]
         );
 
-        return res.status(200).json({
-          status: "Sensor master added successfully",
-          data: addRes.rows[0],
-        });
+        if (getRes.rowCount === 0) {
+          return res.status(401).json({ error: "Device does not exists" });
+        }
+
+        const sensors = getRes.rows;
+        sensors.forEach((sensor) => delete sensor.sensor_id);
+
+        return res.status(200).json(sensors);
       } catch (error) {
         console.log("ADD Sensor Master error", error);
         return res.status(500).json("Server error");
