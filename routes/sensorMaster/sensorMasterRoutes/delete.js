@@ -7,8 +7,8 @@ const {
 const appConstants = require("../../../constants/appConstants");
 
 module.exports = (router) => {
-  router.post(
-    "/get-sensors-of-device",
+  router.delete(
+    "/delete",
     [authorization, authorizeAdmin, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
@@ -16,25 +16,38 @@ module.exports = (router) => {
       const { sensorMaster } = appConstants.SQL_TABLE;
 
       try {
-        const { device_id } = req.body;
+        const {
+          device_id,
+          sensor_idx,
+          sensor_name,
+          sensor_uom,
+          sensor_report_group,
+        } = req.body;
 
         const getRes = await pool.query(
-          `SELECT * FROM ${sensorMaster}
-            WHERE device_id = $1`,
-          [device_id]
+          `DELETE FROM ${sensorMaster}
+            WHERE device_id = $1 AND 
+            sensor_idx = $2 AND
+            sensor_name = $3 AND
+            sensor_uom = $4 AND
+            sensor_report_group = $5
+          RETURNING *`,
+          [device_id, sensor_idx, sensor_name, sensor_uom, sensor_report_group]
         );
+
+        console.log("GET RES:SEE:::", getRes.rowCount);
 
         if (getRes.rowCount === 0) {
           return res.status(401).json({ error: "Device does not exists" });
         }
 
-        const sensors = getRes.rows;
-        sensors.forEach((sensor) => {
-          delete sensor.sensor_id;
-          delete sensor.meter_idx;
-        });
+        const sensor = getRes.rows[0];
+        delete sensor.sensor_id;
 
-        return res.status(200).json(sensors);
+        return res.status(200).json({
+          message: "Successfully deleted Sensor",
+          sensorDetails: sensor,
+        });
       } catch (error) {
         console.log("ADD Sensor Master error", error);
         return res.status(500).json("Server error");

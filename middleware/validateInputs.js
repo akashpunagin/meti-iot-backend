@@ -248,6 +248,15 @@ module.exports = (req, res, next) => {
   const customerError = handleCustomerReq(req);
   const sensorMasterError = handleSensorMasterReq(req);
 
+  console.log({
+    authError,
+    deviceError,
+    sensorValueError,
+    tenantError,
+    customerError,
+    sensorMasterError,
+  });
+
   if (authError) {
     return res.status(401).json({ error: authError });
   }
