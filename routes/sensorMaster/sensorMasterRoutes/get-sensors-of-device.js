@@ -30,7 +30,6 @@ module.exports = (router) => {
 
         const sensors = getRes.rows;
         sensors.forEach((sensor) => {
-          delete sensor.sensor_id;
           delete sensor.meter_idx;
         });
 
