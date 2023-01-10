@@ -35,14 +35,13 @@ module.exports = (router) => {
           [device_id, sensor_idx, sensor_name, sensor_uom, sensor_report_group]
         );
 
-        console.log("GET RES:SEE:::", getRes.rowCount);
-
         if (getRes.rowCount === 0) {
           return res.status(401).json({ error: "Device does not exists" });
         }
 
         const sensor = getRes.rows[0];
         delete sensor.sensor_id;
+        delete sensor.meter_idx;
 
         return res.status(200).json({
           message: "Successfully deleted Sensor",
