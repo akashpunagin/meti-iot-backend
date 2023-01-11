@@ -104,3 +104,12 @@ CREATE TABLE sensor_value(
     reading_time TIMESTAMPTZ NOT NULL
 );
 SELECT create_hypertable('sensor_value', 'reading_time');
+
+--table to store sensor names--
+CREATE TABLE sensor_type(
+    id SERIAL PRIMARY KEY,
+    sensor_idx INT NOT NULL,
+    sensor_name VARCHAR NOT NULL,
+    sensor_uom VARCHAR NOT NULL, --measurement unit-- 
+    sensor_report_group INT NOT NULL --analog or digital,  digital (1), analog (2)--
+);
