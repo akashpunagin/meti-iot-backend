@@ -69,4 +69,6 @@ VALUES
     (38, 'Capacitive Energy (Import)', 'V Arh', '1'),
     (39, 'Load Hours (Import)', 'Min', '1'),
     (40, 'Load Hours (Export)', 'Min', '1'),
-    (41, 'Load Hours (Total)', 'Min', '1');
+    (41, 'Load Hours (Total)', 'Min', '1'),
+    (41, 'Reserved', '-', '1'),
+    (41, 'RPM', '-', '1');

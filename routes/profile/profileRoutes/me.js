@@ -8,7 +8,7 @@ module.exports = (router) => {
     try {
       return res.status(200).json(req.user);
     } catch (error) {
-      console.log("ADD Device error", error);
+      console.log("PROILE ERROR", error);
       return res.status(500).json("Server error");
     }
   });
