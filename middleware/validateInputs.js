@@ -1,3 +1,5 @@
+const { isValidTimestamp } = require("../utilities/isValidTimeStamp");
+
 const missingCredsMessage = "Missing Credentials";
 const invalidCredsMessage = "Invalid Credentials";
 const invalidEmailMessage = "Invalid Email";
@@ -240,6 +242,23 @@ function handleSensorMasterReq(req) {
   }
 }
 
+function handleReportReq(req) {
+  const { fromDate, toDate } = req.body;
+
+  if (req.path === "/between-dates") {
+    if (![fromDate, toDate].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidTimestamp(fromDate) > 0) {
+      return "From Date is invalid";
+    }
+
+    if (!isValidTimestamp(toDate) > 0) {
+      return "To Date is invalid";
+    }
+  }
+}
+
 module.exports = (req, res, next) => {
   const authError = handleAuthReq(req);
   const deviceError = handleDeviceReq(req);
@@ -247,6 +266,7 @@ module.exports = (req, res, next) => {
   const tenantError = handleTenetReq(req);
   const customerError = handleCustomerReq(req);
   const sensorMasterError = handleSensorMasterReq(req);
+  const reportError = handleReportReq(req);
 
   console.log({
     authError,
@@ -255,6 +275,7 @@ module.exports = (req, res, next) => {
     tenantError,
     customerError,
     sensorMasterError,
+    reportError,
   });
 
   if (authError) {
@@ -274,6 +295,9 @@ module.exports = (req, res, next) => {
   }
   if (req.originalUrl.includes("/sensorMaster/") && sensorMasterError) {
     return res.status(401).json({ error: sensorMasterError });
+  }
+  if (req.originalUrl.includes("/report/") && reportError) {
+    return res.status(401).json({ error: reportError });
   }
 
   next();
