@@ -4,6 +4,12 @@ const {
   validateInputs,
 } = require("../../../middleware/exportMiddlewares");
 const appConstants = require("../../../constants/appConstants");
+const {
+  generateReport,
+  getReportPath,
+  getFileName,
+} = require("../../../utilities/generateReport");
+const fs = require("fs");
 
 module.exports = (router) => {
   router.post(
@@ -16,6 +22,7 @@ module.exports = (router) => {
 
       try {
         const { fromDate, toDate } = req.body;
+        const currentUser = req.user;
 
         const reportRes = await pool.query(
           `SELECT * 
@@ -27,10 +34,23 @@ module.exports = (router) => {
             sv.reading_time BETWEEN $1 and $2`,
           [fromDate, toDate]
         );
-        const data = reportRes.rows;
-        console.log({ data });
+        const reportData = reportRes.rows;
+        generateReport(currentUser.userId, reportData, fromDate, toDate);
 
-        return res.status(200).json(data);
+        const reportPath = getReportPath(currentUser.userId);
+        const reportFileName = getFileName(currentUser.userId);
+
+        const file = fs.createReadStream(reportPath);
+        const stat = fs.statSync(reportPath);
+
+        res.setHeader("Content-Length", stat.size);
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename=${reportFileName}.pdf`
+        );
+        file.pipe(res);
+        return res.status(200);
       } catch (error) {
         console.log("PROILE ERROR", error);
         return res.status(500).json("Server error");

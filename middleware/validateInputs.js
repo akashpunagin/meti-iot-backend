@@ -4,6 +4,13 @@ const missingCredsMessage = "Missing Credentials";
 const invalidCredsMessage = "Invalid Credentials";
 const invalidEmailMessage = "Invalid Email";
 
+function isEndAfterStartDate(startDate, endDate) {
+  var startDate = new Date(startDate);
+  var endDate = new Date(endDate);
+
+  return endDate.getTime() >= startDate.getTime();
+}
+
 function isValidEmail(userEmail) {
   const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
     userEmail
@@ -255,6 +262,10 @@ function handleReportReq(req) {
 
     if (!isValidTimestamp(toDate) > 0) {
       return "To Date is invalid";
+    }
+
+    if (!isEndAfterStartDate(fromDate, toDate)) {
+      return "Start date should be before end date";
     }
   }
 }
