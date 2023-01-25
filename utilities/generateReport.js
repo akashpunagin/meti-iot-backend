@@ -1,12 +1,18 @@
 const { jsPDF } = require("jspdf");
+const fs = require("fs");
 require("jspdf-autotable");
 
-function getFileName(userId) {
+function deleteReportFile(userId) {
+  const filePath = getReportPath(userId);
+  fs.unlinkSync(filePath);
+}
+
+function getReportFileName(userId) {
   return `${userId}_report`;
 }
 
 function getReportPath(userId) {
-  return `./reports/${getFileName(userId)}.pdf`;
+  return `./reports/${getReportFileName(userId)}.pdf`;
 }
 
 function getFormattedShortDate(unformattedDate) {
@@ -87,4 +93,9 @@ function generateReport(userId, reportData, startDate, endDate) {
   doc.save(getReportPath(userId));
 }
 
-module.exports = { generateReport, getReportPath, getFileName };
+module.exports = {
+  generateReport,
+  getReportPath,
+  getReportFileName,
+  deleteReportFile,
+};

@@ -7,7 +7,8 @@ const appConstants = require("../../../constants/appConstants");
 const {
   generateReport,
   getReportPath,
-  getFileName,
+  getReportFileName,
+  deleteReportFile,
 } = require("../../../utilities/generateReport");
 const fs = require("fs");
 
@@ -38,7 +39,7 @@ module.exports = (router) => {
         generateReport(currentUser.userId, reportData, fromDate, toDate);
 
         const reportPath = getReportPath(currentUser.userId);
-        const reportFileName = getFileName(currentUser.userId);
+        const reportFileName = getReportFileName(currentUser.userId);
 
         const file = fs.createReadStream(reportPath);
         const stat = fs.statSync(reportPath);
@@ -49,7 +50,13 @@ module.exports = (router) => {
           "Content-Disposition",
           `attachment; filename=${reportFileName}.pdf`
         );
+        file.on("end", function () {
+          fs.unlink(reportFileName, function () {
+            deleteReportFile(currentUser.userId);
+          });
+        });
         file.pipe(res);
+
         return res.status(200);
       } catch (error) {
         console.log("PROILE ERROR", error);
