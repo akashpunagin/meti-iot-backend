@@ -22,6 +22,9 @@ function getFormattedShortDate(unformattedDate) {
     month: "short",
     year: "numeric",
   });
+
+  formattedDate.setHours(formattedDate.getHours() + 5);
+  formattedDate.setMinutes(formattedDate.getMinutes() + 30);
   return formattedDate;
 }
 
