@@ -17,8 +17,6 @@ function getReportPath(userId) {
 
 function getFormattedShortDate(unformattedDate) {
   const date = new Date(unformattedDate);
-  // date.setHours(date.getHours() + 5);
-  // date.setMinutes(date.getMinutes() + 30);
 
   const formattedDate = date.toLocaleString("en-GB", {
     day: "numeric",
@@ -48,6 +46,7 @@ function getTableBody(reportData) {
       year: "numeric",
       hour: "numeric",
       minute: "2-digit",
+      timeZone: "Asia/Kolkata",
     });
 
     const tableRow = [
