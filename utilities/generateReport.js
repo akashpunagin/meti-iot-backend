@@ -17,14 +17,16 @@ function getReportPath(userId) {
 
 function getFormattedShortDate(unformattedDate) {
   const date = new Date(unformattedDate);
+  // date.setHours(date.getHours() + 5);
+  // date.setMinutes(date.getMinutes() + 30);
+
   const formattedDate = date.toLocaleString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone: "Asia/Kolkata",
   });
 
-  formattedDate.setHours(formattedDate.getHours() + 5);
-  formattedDate.setMinutes(formattedDate.getMinutes() + 30);
   return formattedDate;
 }
 
