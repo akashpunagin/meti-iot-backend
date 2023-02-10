@@ -12,7 +12,7 @@ module.exports = (router) => {
         `
       SELECT 
         v.value,
-        v.reading_time at time zone 'utc' at time zone 'Asia/Kolkata'
+        v.reading_time at time zone 'utc' at time zone 'Asia/Kolkata' as reading_time
       FROM 
         sensor_value as v,
         sensor_master as m
