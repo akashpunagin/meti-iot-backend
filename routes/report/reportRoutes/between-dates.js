@@ -32,7 +32,7 @@ module.exports = (router) => {
           WHERE
             sv.device_id = sm.device_id AND
             sv.sensor_idx = sm.sensor_idx AND
-            sv.reading_time BETWEEN $1 and $2`,
+            sv.reading_time >= $1 AND sv.reading_time <= $2`,
           [fromDate, toDate]
         );
         const reportData = reportRes.rows;
