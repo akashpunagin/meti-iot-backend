@@ -10,7 +10,9 @@ module.exports = (router) => {
     try {
       const getRes = await pool.query(
         `
-      SELECT v.value, v.reading_time
+      SELECT 
+        v.value,
+        v.reading_time at time zone 'utc' at time zone 'Asia/Kolkata'
       FROM 
         sensor_value as v,
         sensor_master as m

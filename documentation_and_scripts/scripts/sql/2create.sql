@@ -101,7 +101,8 @@ CREATE TABLE sensor_value(
 
     meter_idx INT NOT NULL DEFAULT 0,
     value FLOAT NOT NULL,
-    reading_time TIMESTAMPTZ NOT NULL
+    -- reading_time TIMESTAMPTZ NOT NULL
+    reading_time timestamp without time zone default (now() at time zone 'utc')
 );
 SELECT create_hypertable('sensor_value', 'reading_time');
 
