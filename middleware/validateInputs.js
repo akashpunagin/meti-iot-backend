@@ -256,13 +256,13 @@ function handleReportReq(req) {
     if (![fromDate, toDate].every(Boolean)) {
       return missingCredsMessage;
     }
-    if (!isValidTimestamp(fromDate) > 0) {
-      return "From Date is invalid";
-    }
+    // if (!isValidTimestamp(fromDate) > 0) {
+    //   return "From Date is invalid";
+    // }
 
-    if (!isValidTimestamp(toDate) > 0) {
-      return "To Date is invalid";
-    }
+    // if (!isValidTimestamp(toDate) > 0) {
+    //   return "To Date is invalid";
+    // }
 
     if (!isEndAfterStartDate(fromDate, toDate)) {
       return "Start date should be before end date";
