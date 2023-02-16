@@ -34,10 +34,10 @@ module.exports = (router) => {
         role = "ADMIN";
       }
       if (roleCustomer) {
-        role = "CUSTOMER";
+        role = "TENANT";
       }
       if (roleTenant) {
-        role = "TENANT";
+        role = "CUSTOMER";
       }
 
       return res.status(200).json({ role });
