@@ -14,6 +14,7 @@ const tenantRouter = require("./routes/tenant/tenantRouter");
 const sensorMasterRouter = require("./routes/sensorMaster/sensorMasterRouter");
 const sensorTypeRouter = require("./routes/sensorType/sensorTypeRouter");
 const reportRouter = require("./routes/report/reportRouter");
+const csvRouter = require("./routes/csv/csvRouter");
 
 const PORT = process.env.PORT;
 
@@ -31,6 +32,7 @@ app.use("/tenant", tenantRouter);
 app.use("/sensorMaster", sensorMasterRouter);
 app.use("/sensorType", sensorTypeRouter);
 app.use("/report", reportRouter);
+app.use("/csv", csvRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");

@@ -4,7 +4,9 @@ require("jspdf-autotable");
 
 function deleteReportFile(userId) {
   const filePath = getReportPath(userId);
-  fs.unlinkSync(filePath);
+  try {
+    fs.unlinkSync(filePath);
+  } catch (error) {}
 }
 
 function getReportFileName(userId) {
