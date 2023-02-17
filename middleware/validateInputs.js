@@ -250,10 +250,27 @@ function handleSensorMasterReq(req) {
 }
 
 function handleReportReq(req) {
-  const { fromDate, toDate } = req.body;
+  const { fromDate, toDate, deviceId } = req.body;
 
   if (req.path === "/between-dates") {
     if (![fromDate, toDate].every(Boolean)) {
+      return missingCredsMessage;
+    }
+    if (!isValidTimestamp(fromDate) > 0) {
+      return "From Date is invalid";
+    }
+
+    if (!isValidTimestamp(toDate) > 0) {
+      return "To Date is invalid";
+    }
+
+    if (!isEndAfterStartDate(fromDate, toDate)) {
+      return "Start date should be before end date";
+    }
+  }
+
+  if (req.path === "/between-dates-specific-device") {
+    if (![fromDate, toDate, deviceId].every(Boolean)) {
       return missingCredsMessage;
     }
     if (!isValidTimestamp(fromDate) > 0) {

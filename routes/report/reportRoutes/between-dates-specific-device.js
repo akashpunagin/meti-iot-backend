@@ -14,12 +14,12 @@ const fs = require("fs");
 
 module.exports = (router) => {
   router.post(
-    "/between-dates",
+    "/between-dates-specific-device",
     [authorization, validateInputs],
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { sensorValue, sensorMaster } = appConstants.SQL_TABLE;
+      const { sensorValue, sensorMaster, deviceId } = appConstants.SQL_TABLE;
 
       try {
         const { fromDate, toDate } = req.body;
@@ -33,8 +33,9 @@ module.exports = (router) => {
             sv.device_id = sm.device_id AND
             sv.sensor_idx = sm.sensor_idx AND
             sv.reading_time::timestamp >= $1::timestamp AND
+            sv.device_id = $3 AND
             sv.reading_time::timestamp < $2::timestamp + interval '1 day'`,
-          [fromDate, toDate]
+          [fromDate, toDate, deviceId]
         );
         const reportData = reportRes.rows;
         generateReport(currentUser.userId, reportData, fromDate, toDate);
@@ -60,7 +61,7 @@ module.exports = (router) => {
 
         return res.status(200);
       } catch (error) {
-        console.log("between-dates ERROR", error);
+        console.log("between-dates-specific-device ERROR", error);
         return res.status(500).json("Server error");
       }
     }
