@@ -19,10 +19,10 @@ module.exports = (router) => {
     async (req, res) => {
       console.log("Route:", req.originalUrl);
 
-      const { sensorValue, sensorMaster, deviceId } = appConstants.SQL_TABLE;
+      const { sensorValue, sensorMaster } = appConstants.SQL_TABLE;
 
       try {
-        const { fromDate, toDate } = req.body;
+        const { fromDate, toDate, deviceId } = req.body;
         const currentUser = req.user;
 
         const reportRes = await pool.query(
@@ -32,12 +32,13 @@ module.exports = (router) => {
           WHERE
             sv.device_id = sm.device_id AND
             sv.sensor_idx = sm.sensor_idx AND
-            sv.reading_time::timestamp >= $1::timestamp AND
             sv.device_id = $3 AND
+            sv.reading_time::timestamp >= $1::timestamp AND
             sv.reading_time::timestamp < $2::timestamp + interval '1 day'`,
           [fromDate, toDate, deviceId]
         );
         const reportData = reportRes.rows;
+
         generateReport(currentUser.userId, reportData, fromDate, toDate);
 
         const reportPath = getReportPath(currentUser.userId);
