@@ -85,22 +85,18 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     }
   });
 
-  client.subscribe(TOPIC, function (err) {
-    if (!err) {
-      client.on("message", function (topic, payload, packet) {
-        console.log("ON MESSAGE, topic: ", TOPIC);
-        // message is Buffer
-        // console.log(
-        //   `Topic: ${topic}, Message: ${payload.toString()}, QoS: ${
-        //     packet.qos
-        //   }`
-        // );
+  client.on("message", function (topic, payload, packet) {
+    console.log("ON MESSAGE, topic: ", TOPIC);
+    // message is Buffer
+    // console.log(
+    //   `Topic: ${topic}, Message: ${payload.toString()}, QoS: ${
+    //     packet.qos
+    //   }`
+    // );
 
-        console.log("ON MESSAGE: PAYLOAD:", JSON.parse(payload.toString()));
-        // saveDataInDatabase(deviceIdtopicsObj, JSON.parse(payload.toString()));
-        // client.end();
-      });
-    }
+    console.log("ON MESSAGE: PAYLOAD:", JSON.parse(payload.toString()));
+    // saveDataInDatabase(deviceIdtopicsObj, JSON.parse(payload.toString()));
+    // client.end();
   });
 
   // for (let i = 0; i < deviceIdtopicsObjs.length; i++) {
