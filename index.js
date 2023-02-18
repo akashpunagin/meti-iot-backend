@@ -43,7 +43,7 @@ app.listen(PORT, async () => {
   const deviceIdtopicsObjs = await mqttService.getTopics();
 
   console.log("index.js: Device ID, TOPICS: ", deviceIdtopicsObjs);
-  mqttService.saveDataFromTopics(deviceIdtopicsObjs);
+  await mqttService.saveDataFromTopics(deviceIdtopicsObjs);
 });
 
 module.exports = app;
