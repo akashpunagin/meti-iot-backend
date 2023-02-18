@@ -21,7 +21,7 @@ async function getTopics() {
   }
 }
 
-async function saveDataInDatabase(deviceIdtopicsObj, payload) {
+async function saveDataInDatabase(deviceId, payload) {
   // const sampleOutput = [
   //   {
   //     meter_idx: 0,
@@ -42,7 +42,7 @@ async function saveDataInDatabase(deviceIdtopicsObj, payload) {
   for (const data of payload) {
     for (const sensor of data.sensors) {
       const reqBody = {
-        device_id: deviceIdtopicsObj.deviceId,
+        device_id: deviceId,
         sensor_idx: sensor.idx,
         value: sensor.val,
       };
@@ -53,7 +53,7 @@ async function saveDataInDatabase(deviceIdtopicsObj, payload) {
         body: JSON.stringify(reqBody),
       });
       const res = await response.json();
-      console.log("ADD RES DATA: ", res);
+      console.log("ADDED TO DATABASE: ", res);
     }
   }
 }
@@ -96,9 +96,7 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
 
     const deviceId = topic.split("/")[0];
 
-    console.log({ deviceId });
-    console.log("ON MESSAGE: PAYLOAD:", JSON.parse(payload.toString()));
-    // saveDataInDatabase(deviceIdtopicsObj, JSON.parse(payload.toString()));
+    saveDataInDatabase(deviceId, JSON.parse(payload.toString()));
     // client.end();
   });
 
