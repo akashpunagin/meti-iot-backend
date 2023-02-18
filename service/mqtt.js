@@ -94,7 +94,9 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     //   }`
     // );
 
-    console.log({ topic, packet });
+    const deviceId = topic.split("/")[0];
+
+    console.log({ deviceId });
     console.log("ON MESSAGE: PAYLOAD:", JSON.parse(payload.toString()));
     // saveDataInDatabase(deviceIdtopicsObj, JSON.parse(payload.toString()));
     // client.end();
