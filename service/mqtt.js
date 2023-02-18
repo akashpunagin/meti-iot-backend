@@ -71,8 +71,6 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     password: MQTT_CLIENT_PASSWORD,
   };
 
-  // console.log("SAVE DATA FROM TOPICS: ", URL, options);
-
   const client = mqtt.connect(URL, options);
 
   client.on("connect", async function () {
@@ -86,27 +84,11 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
   });
 
   client.on("message", function (topic, payload, packet) {
-    // console.log("ON MESSAGE, topic: ", TOPIC);
-    // message is Buffer
-    // console.log(
-    //   `Topic: ${topic}, Message: ${payload.toString()}, QoS: ${
-    //     packet.qos
-    //   }`
-    // );
-
     const deviceId = topic.split("/")[0];
 
     saveDataInDatabase(deviceId, JSON.parse(payload.toString()));
     // client.end();
   });
-
-  // for (let i = 0; i < deviceIdtopicsObjs.length; i++) {
-  //   const deviceIdtopicsObj = deviceIdtopicsObjs[i];
-  //   const TOPIC = deviceIdtopicsObj.topic;
-
-  //   await delay(3000);
-
-  // }
 }
 
 module.exports = { getTopics, saveDataFromTopics };
