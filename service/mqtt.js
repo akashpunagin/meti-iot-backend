@@ -86,7 +86,7 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
   });
 
   client.on("message", function (topic, payload, packet) {
-    console.log("ON MESSAGE, topic: ", TOPIC);
+    // console.log("ON MESSAGE, topic: ", TOPIC);
     // message is Buffer
     // console.log(
     //   `Topic: ${topic}, Message: ${payload.toString()}, QoS: ${
