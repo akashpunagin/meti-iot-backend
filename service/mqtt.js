@@ -94,7 +94,7 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     //   }`
     // );
 
-    console.log("ON MESSAGE: PAYLOAD:", JSON.parse(payload.toString()));
+    console.log("ON MESSAGE: PAYLOAD:", payload);
     // saveDataInDatabase(deviceIdtopicsObj, JSON.parse(payload.toString()));
     // client.end();
   });
