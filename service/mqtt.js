@@ -73,6 +73,8 @@ function connectMQTTClient() {
     password: MQTT_CLIENT_PASSWORD,
   };
 
+  client = mqtt.connect(URL, options);
+
   return client;
 }
 
@@ -82,18 +84,7 @@ function endMQTTClient() {
 
 async function saveDataFromTopics(deviceIdtopicsObjs, client) {
   console.log("inside saveDataFromTopics");
-  const URL = `${MQTT_URL}:${MQTT_PORT}`;
 
-  const options = {
-    // Clean session
-    clean: true,
-    connectTimeout: 4000,
-    // Auth
-    clientId: MQTT_CLIENT_ID,
-    username: MQTT_CLIENT_USERNAME,
-    password: MQTT_CLIENT_PASSWORD,
-  };
-  client = mqtt.connect(URL, options);
   client.on("connect", async function () {
     console.log("\nCONNECTED TO MQTT");
     for (let i = 0; i < deviceIdtopicsObjs.length; i++) {
