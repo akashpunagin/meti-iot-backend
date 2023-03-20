@@ -58,7 +58,9 @@ async function saveDataInDatabase(deviceId, payload) {
   }
 }
 
-async function saveDataFromTopics(deviceIdtopicsObjs) {
+let client = null;
+
+function connectMQTTClient() {
   const URL = `${MQTT_URL}:${MQTT_PORT}`;
 
   const options = {
@@ -71,8 +73,27 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     password: MQTT_CLIENT_PASSWORD,
   };
 
-  const client = mqtt.connect(URL, options);
+  return client;
+}
 
+function endMQTTClient() {
+  client.end();
+}
+
+async function saveDataFromTopics(deviceIdtopicsObjs, client) {
+  console.log("inside saveDataFromTopics");
+  const URL = `${MQTT_URL}:${MQTT_PORT}`;
+
+  const options = {
+    // Clean session
+    clean: true,
+    connectTimeout: 4000,
+    // Auth
+    clientId: MQTT_CLIENT_ID,
+    username: MQTT_CLIENT_USERNAME,
+    password: MQTT_CLIENT_PASSWORD,
+  };
+  client = mqtt.connect(URL, options);
   client.on("connect", async function () {
     console.log("\nCONNECTED TO MQTT");
     for (let i = 0; i < deviceIdtopicsObjs.length; i++) {
@@ -87,8 +108,12 @@ async function saveDataFromTopics(deviceIdtopicsObjs) {
     const deviceId = topic.split("/")[0];
 
     saveDataInDatabase(deviceId, JSON.parse(payload.toString()));
-    // client.end();
   });
 }
 
-module.exports = { getTopics, saveDataFromTopics };
+module.exports = {
+  getTopics,
+  saveDataFromTopics,
+  connectMQTTClient,
+  endMQTTClient,
+};

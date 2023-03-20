@@ -43,9 +43,8 @@ app.listen(PORT, async () => {
   const deviceIdtopicsObjs = await mqttService.getTopics();
 
   console.log("index.js: Device ID, TOPICS: ", deviceIdtopicsObjs);
-  await mqttService.saveDataFromTopics(deviceIdtopicsObjs);
+  const client = mqttService.connectMQTTClient();
+  await mqttService.saveDataFromTopics(deviceIdtopicsObjs, client);
 });
 
 module.exports = app;
-
-//TODO admin - get all devices with customer name
