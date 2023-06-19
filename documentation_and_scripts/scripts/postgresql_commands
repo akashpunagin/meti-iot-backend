@@ -2,6 +2,8 @@ psql -U postgres
 
 CREATE ROLE me WITH LOGIN PASSWORD 'password';
 ALTER ROLE me CREATEDB;
+GRANT ALL ON DATABASE me TO me;
+ALTER DATABASE me OWNER TO me;
 
 psql -d postgres -U me
 

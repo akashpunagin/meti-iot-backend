@@ -1,5 +1,7 @@
-INSERT INTO customer(is_verified, email, name, country, state, city, zip, address, contact_number, password, refresh_token)
-VALUES (true, 'test@gmail.com', 'Mr.X', 'India', 'Karnataka', 'Bangalore', 1212121, 'Pattengere', '1212121212', 'password', 'asjkdhsakjhdksjh');
+INSERT INTO users(is_verified, email, first_name, last_name, country, state, city, zip, address, contact_number, password, 
+refresh_token, user_id)
+VALUES (true, 'test@gmail.com', 'A', 'B', 'India', 'Karnataka', 'Bangalore', 1212121, 'Pattengere', '1212121212', 'password',
+ 'asjkdhsakjhdksjh', '6a6dcefa-437f-47af-b82b-f7e4f074114b');
 
 INSERT INTO device(device_id, client_topic,
 variant, hw_ver, fw_ver, o_logo, o_prod_name, o_prod_ver, u_dev_name, u_comp_name, u_tz_diff,

@@ -47,5 +47,3 @@ app.listen(PORT, async () => {
 });
 
 module.exports = app;
-
-//TODO admin - get all devices with customer name

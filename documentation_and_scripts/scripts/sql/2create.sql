@@ -104,7 +104,7 @@ CREATE TABLE sensor_value(
     -- reading_time TIMESTAMPTZ NOT NULL
     reading_time timestamp without time zone default (now() at time zone 'utc')
 );
-SELECT create_hypertable('sensor_value', 'reading_time');
+-- SELECT create_hypertable('sensor_value', 'reading_time');
 
 --table to store sensor names--
 CREATE TABLE sensor_type(

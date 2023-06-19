@@ -16,7 +16,7 @@ async function getTopics() {
     const response = await axios.get(`${BASE_URL}/device/getTopics`);
     return response.data;
   } catch (error) {
-    console.log("GET TOPICS ERROR:", error);
+    console.log("GET TOPICS ERROR:", error.message);
     return false;
   }
 }
